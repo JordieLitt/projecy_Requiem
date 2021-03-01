@@ -24,9 +24,14 @@ public class Character_Movement : MonoBehaviour
   public Image lives2;
   public Image lives3;
   public Sprite lostHealth;
+
+  public AudioClip hit;
+  AudioSource audioSource;
   
   void Start()
   {
+    audioSource = GetComponent<AudioSource>();
+
     lives = 3;
 
     anim = GetComponentInChildren<Animator>();
@@ -39,12 +44,12 @@ public class Character_Movement : MonoBehaviour
 
     moveDirection = new Vector3(x, 0, z);
 
-     isGrounded = Physics.CheckSphere(transform.position, groundCheckDistance, groundMask);
+    isGrounded = Physics.CheckSphere(transform.position, groundCheckDistance, groundMask);
 
-        if(isGrounded && velocity.y < 0)
-        {
-            velocity.y = -2f;
-        }
+    if(isGrounded && velocity.y < 0)
+    {
+      velocity.y = -2f;
+    }
 
     if(moveDirection != Vector3.zero)
     {
@@ -86,6 +91,7 @@ public class Character_Movement : MonoBehaviour
     if (other.gameObject.CompareTag("Enemy"))
     {
       lives -= 1;
+      audioSource.Play();
 
       if(lives == 2)
       {
@@ -110,6 +116,5 @@ public class Character_Movement : MonoBehaviour
         SceneManager.LoadScene("LossScene");
       }
     }
-
   }
 }
